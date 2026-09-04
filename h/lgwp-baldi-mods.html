@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baldi Mods</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: #0a0a0b; color: #f2f2f3; display: grid; place-items: center; padding: 24px;
+         font: 15px/1.5 "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  .card { width: 100%; max-width: 520px; }
+  h1 { font-size: clamp(24px, 5vw, 34px); margin: 0 0 6px; letter-spacing: -0.02em; }
+  p.sub { margin: 0 0 24px; color: #9a9aa0; font-size: 14px; }
+  .list { display: grid; gap: 11px; }
+  a.mod, button.shuffle {
+    display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+    padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,.09);
+    background: rgba(255,255,255,.035); color: inherit; text-decoration: none; cursor: pointer;
+    font: inherit; transition: background .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  a.mod:hover, button.shuffle:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.18); transform: translateY(-1px); }
+  .n { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px;
+       background: rgba(255,255,255,.07); font-weight: 700; font-size: 13px; }
+  .t { min-width: 0; }
+  .t b { display: block; font-weight: 650; font-size: 15px; }
+  .t span { color: #9a9aa0; font-size: 12.5px; }
+  .arw { margin-left: auto; color: #6e6e75; }
+  button.shuffle { margin-top: 18px; justify-content: center; font-weight: 650; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Baldi Mods</h1>
+    <p class="sub">Three builds. Pick one, or shuffle.</p>
+    <div class="list" id="list"></div>
+    <button class="shuffle" id="shuffle" type="button">Shuffle</button>
+  </div>
+<script>
+  // Each folder is a full Unity build with its own index.html, sitting next to this file.
+  // They are listed here rather than discovered because a directory listing is not served.
+  var MODS = [
+    { dir: '-3', name: 'Minus Three', note: 'Baldi’s Basics: minus three' },
+    { dir: '-b', name: 'Minus B',     note: 'Baldi’s Basics: -b' },
+    { dir: 't3', name: 'T3',          note: 'Baldi’s Basics: t3' }
+  ];
+  var list = document.getElementById('list');
+  MODS.forEach(function (m, i) {
+    var a = document.createElement('a');
+    a.className = 'mod';
+    // Relative, so it works on every domain the site answers on without knowing the host.
+    a.href = encodeURIComponent(m.dir) + '/index.html';
+    a.innerHTML = '<span class="n">' + (i + 1) + '</span>' +
+      '<span class="t"><b></b><span></span></span>' +
+      '<span class="arw">&#8594;</span>';
+    a.querySelector('b').textContent = m.name;
+    a.querySelector('.t span').textContent = m.note;
+    list.appendChild(a);
+  });
+  document.getElementById('shuffle').onclick = function () {
+    var m = MODS[Math.floor(Math.random() * MODS.length)];
+    location.href = encodeURIComponent(m.dir) + '/index.html';
+  };
+</script>
+</body>
+</html>
